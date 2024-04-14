@@ -40,7 +40,7 @@ const Main = () => {
             </button>
           </div>
         </div>
-        <div className="categories w-full flex space-x-8 px-2 py-10">
+        <div className="categories bg-white w-full flex  space-x-8 px-2 py-10">
           <div className="bg-black text-white px-5 py-2 rounded-full drop-shadow-xl">
             <p>Homme</p>
           </div>
