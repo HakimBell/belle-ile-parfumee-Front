@@ -1,10 +1,12 @@
 import React from "react";
-import "./App.css";
 
+import Home from "./Pages/Home";
 function App() {
   return (
     <>
-      <h1 className="underline text-2xl">hello world</h1>
+      <div className="App">
+        <Home />
+      </div>
     </>
   );
 }
