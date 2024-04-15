@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import parfumFormImage from "../assets/parfum-form.jpg";
 
 function Register() {
@@ -12,6 +15,12 @@ function Register() {
   const [zipCode, setZipCode] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +35,10 @@ function Register() {
         phoneNumber,
       });
       console.log("Inscription réussie :", response.data);
+      localStorage.setItem("token", JSON.stringify(response.data.token));
+      localStorage.setItem("newUser", JSON.stringify(response.data.newUser));
+      setToken(response.data.token);
+      toast.success("Inscription réussie !");
 
       // Redirection vers la page principale après l'inscription réussie
       navigate("/home");

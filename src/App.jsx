@@ -6,6 +6,8 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
@@ -17,6 +19,7 @@ import Sidebar from "./components/Sidebar";
 function App() {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Navigate to="/register" />} />
         <Route path="/register" element={<Register />} />

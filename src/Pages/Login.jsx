@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import parfumFormImage from "../assets/parfum-form.jpg";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +6,7 @@ import axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,10 +16,16 @@ function Login() {
         email,
         password,
       });
-      console.log(response.data); // Vous pouvez manipuler la réponse ici, par exemple, rediriger l'utilisateur vers une autre page
+      console.log(response.data);
       navigate("/home");
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.status === 401) {
+        console.log("Mot de passe incorrect");
+        setPassword("");
+      } else {
+        console.log("Erreur lors de la connexion");
+      }
     }
   };
 
