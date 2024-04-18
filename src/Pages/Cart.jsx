@@ -22,9 +22,25 @@ function Cart() {
     fetchCartProducts();
   }, [userId]);
 
+  const removeFromCart = async (productId) => {
+    try {
+      await axios.delete(
+        `http://localhost:4567/products/${userId}/delete-product/${productId}`
+      );
+
+      setCartProducts(
+        cartProducts.filter((product) => product._id !== productId)
+      );
+      console.log("Product removed from cart successfully");
+    } catch (error) {
+      console.error("Error removing product from cart:", error);
+    }
+    console.log(userId, productId);
+  };
+
   return (
     <div className="ml-[80px]">
-      <Cartitems products={cartProducts} />
+      <Cartitems products={cartProducts} removeFromCart={removeFromCart} />
     </div>
   );
 }

@@ -3,7 +3,10 @@ import { AiFillDelete } from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 
-const CartItems = ({ products }) => {
+const CartItems = ({ products, removeFromCart }) => {
+  const handleDelete = (productId) => {
+    removeFromCart(productId);
+  };
   return (
     <div>
       <div className="w-11/12 m-auto py-10">
@@ -43,9 +46,8 @@ const CartItems = ({ products }) => {
                     <td>
                       <td>{product.quantity}</td>
                     </td>
-                    {/* <td>{product.price * product.quantity}</td> */}
                     <td>
-                      <button>
+                      <button onClick={() => handleDelete(product._id)}>
                         <AiFillDelete size={"1.5rem"} />
                       </button>
                     </td>
