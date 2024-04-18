@@ -77,7 +77,7 @@ function Register() {
               />
               <input
                 type="text"
-                placeholder="Nom de famille"
+                placeholder="Nom "
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
                 className="border border-gray-400 py-1 px-2 w-full mb-2"

@@ -1,11 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Productdetails from "./Productdetails";
+
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
 
 const Main = () => {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const userName = userData ? userData.firstname : "";
+  const userId = userData ? userData._id : "";
+  // console.log(userId);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const searchHandler = (e) => {
     const filteredArray = products.filter((product) =>
@@ -18,12 +26,18 @@ const Main = () => {
     setSelectedCategory(category);
     if (category === null || category === "Tous les produits") {
       setFilteredProducts(products);
+      console.log(products);
     } else {
       const filteredArray = products.filter(
         (product) => product.gender.toLowerCase() === category.toLowerCase()
       );
       setFilteredProducts(filteredArray);
     }
+  };
+
+  const showProductDetails = (product) => {
+    setSelectedProduct(product);
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -43,19 +57,22 @@ const Main = () => {
       <div className="sticky top-0 z-10">
         <div className="header flex justify-between items-center p-4 bg-white">
           <h1 className="text-3xl font-bold">Belle île Parfumée</h1>
-          <div className="search flex justify-between items-center px-5 py-2 bg-gray-100 rounded">
-            <input
-              type="text"
-              placeholder="Search product"
-              className="bg-transparent outline-0"
-              onChange={searchHandler}
-            />
-            <button onClick={() => searchHandler()}>
-              <CiSearch />
-            </button>
+          <div className="flex justify-between items-center gap-5">
+            <p className="text-3xl font-bold">{userName}</p>
+            <div className="search flex justify-between items-center px-5 py-2 bg-gray-100 rounded">
+              <input
+                type="text"
+                placeholder="Search product"
+                className="bg-transparent outline-0"
+                onChange={searchHandler}
+              />
+              <button onClick={() => searchHandler()}>
+                <CiSearch />
+              </button>
+            </div>
           </div>
         </div>
-        <div className="categories bg-white w-full flex  space-x-8 px-2 py-10">
+        <div className="categories bg-white w-full flex  space-x-8 px-2 py-8">
           <div
             className={`px-5 py-2 rounded-full drop-shadow-xl ${
               selectedCategory === null
@@ -115,12 +132,33 @@ const Main = () => {
               <p className="text-sm">{product.gender}</p>
               <div className="flex justify-between items-center">
                 <p className="text-xl font-bold">{product.price}</p>
-                <CiShoppingCart size={"1.4rem"} />
+                <button onClick={() => showProductDetails(product)}>
+                  Voir les détails
+                </button>
+
+                <button>
+                  <CiShoppingCart className="hover:scale-110" size={"1.4rem"} />
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+      {showModal && selectedProduct && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-99">
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50"
+            onClick={() => setShowModal(false)}
+          ></div>
+          <div className="absolute" style={{ margin: "100px auto 0 auto" }}>
+            <Productdetails
+              userId={userId}
+              product={selectedProduct}
+              closeModal={() => setShowModal(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -63,7 +63,6 @@ const Sidebar = () => {
         <li>
           <button onClick={handleLogout}>
             <PiSignInLight size={"1.5rem"} />
-            Logout
           </button>
         </li>
       </ul>

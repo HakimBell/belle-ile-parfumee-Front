@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
 import parfumFormImage from "../assets/parfum-form.jpg";
 import { NavLink, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,15 +25,17 @@ function Login() {
         password,
       });
       console.log(response.data);
+      const { token } = response.data;
+      const decodedUser = jwtDecode(token);
+      localStorage.setItem("user", JSON.stringify(decodedUser));
+      localStorage.setItem("token", JSON.stringify(response.data.token));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      setToken(response.data.token);
+      toast.success("Connexion réussie !");
       navigate("/home");
     } catch (error) {
       console.error(error);
-      if (error.response && error.response.status === 401) {
-        console.log("Mot de passe incorrect");
-        setPassword("");
-      } else {
-        console.log("Erreur lors de la connexion");
-      }
+      toast.error("Identifiant ou mot de passe incorrect !");
     }
   };
 
@@ -85,6 +95,7 @@ function Login() {
               </div>
             </form>
           </div>
+          <ToastContainer />
         </div>
       </div>
     </div>
