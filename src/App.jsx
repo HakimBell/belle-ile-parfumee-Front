@@ -15,6 +15,7 @@ import Cart from "./Pages/Cart";
 import Favorites from "./Pages/Favorites";
 import Order from "./Pages/Order";
 import Sidebar from "./components/Sidebar";
+import CreateProduct from "./Pages/CreateProduct";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/favs" element={<Favorites />} />
           <Route path="/orders" element={<Order />} />
+          <Route path="/create-product" element={<CreateProduct />} />
         </Route>
       </Routes>
     </Router>

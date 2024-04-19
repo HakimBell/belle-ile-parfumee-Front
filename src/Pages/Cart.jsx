@@ -36,7 +36,7 @@ function Cart() {
         cartProducts.filter((product) => product._id !== productId)
       );
       enqueueSnackbar("Produit supprimé", { variant: "success" });
-
+      window.location.reload();
       console.log("Product removed from cart successfully");
     } catch (error) {
       console.error("Error removing product from cart:", error);
@@ -44,9 +44,34 @@ function Cart() {
     console.log(userId, productId);
   };
 
+  const decreaseQuantity = (productId) => {
+    setCartProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.product._id === productId
+          ? { ...product, quantity: product.quantity - 1 }
+          : product
+      )
+    );
+  };
+
+  const increaseQuantity = (productId) => {
+    setCartProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.product._id === productId
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      )
+    );
+  };
+
   return (
     <div className="ml-[80px]">
-      <Cartitems products={cartProducts} removeFromCart={removeFromCart} />
+      <Cartitems
+        products={cartProducts}
+        removeFromCart={removeFromCart}
+        decreaseQuantity={decreaseQuantity}
+        increaseQuantity={increaseQuantity}
+      />
     </div>
   );
 }

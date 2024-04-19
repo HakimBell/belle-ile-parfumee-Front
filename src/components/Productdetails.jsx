@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { CiShoppingCart } from "react-icons/ci";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 
 function Productdetails({ product, closeModal, userId }) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [cart, setCart] = useState([]);
-  const { enqueueSnackbar } = useSnackbar(); // Utilisation du hook useSnackbar
+  const { enqueueSnackbar } = useSnackbar();
 
   console.log(product._id, userId);
   const handleAddToCart = async () => {
@@ -25,7 +25,7 @@ function Productdetails({ product, closeModal, userId }) {
     }
   };
   return (
-    <div className="product h-[550px] w-[450px] bg-white drop-shadow-2xl p-2 border">
+    <div className="product h-[580px] w-[450px] bg-white drop-shadow-2xl p-2 border">
       <img
         src={product.image}
         alt=""

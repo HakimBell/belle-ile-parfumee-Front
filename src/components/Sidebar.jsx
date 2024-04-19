@@ -4,6 +4,7 @@ import { CiShoppingCart, CiDeliveryTruck } from "react-icons/ci";
 import { IoHeartOutline } from "react-icons/io5";
 import { PiSignInLight } from "react-icons/pi";
 import { NavLink, useNavigate } from "react-router-dom";
+import { IoCreateOutline } from "react-icons/io5";
 const Sidebar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -54,9 +55,9 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/register">
+          <NavLink to="/create-product">
             <button>
-              <PiSignInLight size={"1.5rem"} />
+              <IoCreateOutline size={"1.5rem"} />
             </button>
           </NavLink>
         </li>

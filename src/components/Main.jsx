@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Productdetails from "./Productdetails";
-
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
 
 const Main = () => {
@@ -131,7 +130,7 @@ const Main = () => {
               <p className="text-sm">{product.ml}</p>
               <p className="text-sm">{product.gender}</p>
               <div className="flex justify-between items-center">
-                <p className="text-xl font-bold">{product.price}</p>
+                <p className="text-xl font-bold">{product.price}€</p>
                 <button onClick={() => showProductDetails(product)}>
                   Voir les détails
                 </button>
