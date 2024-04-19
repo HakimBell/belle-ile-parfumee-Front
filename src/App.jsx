@@ -19,7 +19,6 @@ import Sidebar from "./components/Sidebar";
 function App() {
   return (
     <Router>
-      <ToastContainer />
       <Routes>
         <Route path="/" element={<Navigate to="/register" />} />
         <Route path="/register" element={<Register />} />

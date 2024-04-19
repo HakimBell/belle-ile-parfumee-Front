@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { CiShoppingCart } from "react-icons/ci";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 function Productdetails({ product, closeModal, userId }) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [cart, setCart] = useState([]);
+  const { enqueueSnackbar } = useSnackbar(); // Utilisation du hook useSnackbar
 
   console.log(product._id, userId);
   const handleAddToCart = async () => {
@@ -15,6 +17,8 @@ function Productdetails({ product, closeModal, userId }) {
       setCart(response.data);
       console.log(response.data);
       console.log(userId, product._id);
+      enqueueSnackbar("Produit ajouté à votre Panier!", { variant: "success" });
+
       setAddedToCart(true);
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -28,7 +32,7 @@ function Productdetails({ product, closeModal, userId }) {
         className="w-full h-[60%] object-cover p-2"
       />
       <div className="m-2 bg-gray-100 p-2">
-        <h1 className="text-xl font-semibold">{product.name}</h1>
+        <h1 className="text-xl font-semibold text-center">{product.name}</h1>
         <p className="text-sm"> {product.ml}</p>
         <p className="text-sm"> {product.description}</p>
         <p className="text-sm"> {product.gender}</p>

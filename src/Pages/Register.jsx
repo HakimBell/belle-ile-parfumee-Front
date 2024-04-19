@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import parfumFormImage from "../assets/parfum-form.jpg";
 
@@ -16,6 +15,7 @@ function Register() {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [token, setToken] = useState("");
+  const { enqueueSnackbar } = useSnackbar(); // Utilisation du hook useSnackbar
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -38,13 +38,16 @@ function Register() {
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("newUser", JSON.stringify(response.data.newUser));
       setToken(response.data.token);
-      toast.success("Inscription réussie !");
+      enqueueSnackbar("Connexion réussie!", { variant: "success" });
 
       // Redirection vers la page principale après l'inscription réussie
-      navigate("/home");
+      navigate("/login");
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error);
       // Afficher un message d'erreur ou effectuer une action en cas d'échec de l'inscription
+      enqueueSnackbar("Erreur lors de la connexion. Veuillez réessayer.", {
+        variant: "error",
+      });
     }
   };
 

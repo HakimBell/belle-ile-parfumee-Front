@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cartitems from "../components/Cartitems";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 function Cart() {
   const [cartProducts, setCartProducts] = useState([]);
   const userData = JSON.parse(localStorage.getItem("user"));
   const userId = userData ? userData._id : "";
+  const { enqueueSnackbar } = useSnackbar(); // Utilisation du hook useSnackbar
 
+  // Afficher tous les parfums du panier
   useEffect(() => {
     const fetchCartProducts = async () => {
       try {
@@ -22,6 +25,7 @@ function Cart() {
     fetchCartProducts();
   }, [userId]);
 
+  // Supprimer un parfum du panier
   const removeFromCart = async (productId) => {
     try {
       await axios.delete(
@@ -31,6 +35,8 @@ function Cart() {
       setCartProducts(
         cartProducts.filter((product) => product._id !== productId)
       );
+      enqueueSnackbar("Produit supprimé", { variant: "success" });
+
       console.log("Product removed from cart successfully");
     } catch (error) {
       console.error("Error removing product from cart:", error);

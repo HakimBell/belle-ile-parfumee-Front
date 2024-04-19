@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import parfumFormImage from "../assets/parfum-form.jpg";
 import { NavLink, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { SnackbarProvider, useSnackbar } from "notistack";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
@@ -11,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar(); // Utilisation du hook useSnackbar
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -31,11 +31,14 @@ function Login() {
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("user", JSON.stringify(response.data.user));
       setToken(response.data.token);
-      toast.success("Connexion réussie !");
+      enqueueSnackbar("Connexion réussie!", { variant: "success" });
+
       navigate("/home");
     } catch (error) {
       console.error(error);
-      toast.error("Identifiant ou mot de passe incorrect !");
+      enqueueSnackbar("Erreur lors de la connexion. Veuillez réessayer.", {
+        variant: "error",
+      });
     }
   };
 
@@ -95,7 +98,6 @@ function Login() {
               </div>
             </form>
           </div>
-          <ToastContainer />
         </div>
       </div>
     </div>
