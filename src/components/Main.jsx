@@ -2,17 +2,19 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Productdetails from "./Productdetails";
 import { CiSearch, CiShoppingCart } from "react-icons/ci";
-
+import { AiOutlineClose } from "react-icons/ai";
+import { useSnackbar } from "notistack";
+import { NavLink } from "react-router-dom";
 const Main = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
   const userName = userData ? userData.firstname : "";
   const userId = userData ? userData._id : "";
-  // console.log(userId);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const { enqueueSnackbar } = useSnackbar(); // Utilisation du hook useSnackbar
 
   const searchHandler = (e) => {
     const filteredArray = products.filter((product) =>
@@ -50,6 +52,38 @@ const Main = () => {
         console.error("Error fetching products:", error);
       });
   }, []);
+
+  // Supprimer un produit pour l'admin
+  const deleteProduct = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4567/products/${productId}/delete-product`
+      );
+      console.log(response.data);
+      setFilteredProducts(
+        filteredProducts.filter((product) => product._id !== productId)
+      );
+      enqueueSnackbar("Un produit a été supprimé!", { variant: "success" });
+    } catch (error) {
+      console.error(
+        "Une erreur s'est produite lors de la suppression du produit :",
+        error
+      );
+    }
+  };
+
+  // ajout d'un parfum
+  const addToCart = async (product) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4567/products/${product._id}/addToCart/${userId}`
+      );
+
+      enqueueSnackbar("Produit ajouté à votre Panier!", { variant: "success" });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   return (
     <div className="w-full relative">
@@ -118,24 +152,37 @@ const Main = () => {
         {filteredProducts.map((product) => (
           <div
             key={product._id}
-            className="product h-[350px] bg-white drop-shadow-2xl p-2 border"
+            className="product h-[380px] bg-white drop-shadow-2xl p-2 border"
           >
+            <button
+              className="absolute top-0 right-0 text-red-500"
+              onClick={() => deleteProduct(product._id)}
+            >
+              <AiOutlineClose size={20} />
+            </button>
             <img
               src={product.image}
               alt=""
               className="w-full h-[60%] object-cover p-2"
             />
             <div className="m-2 bg-gray-100 p-2">
-              <h1 className="text-xl font-semibold">{product.name}</h1>
+              <h1 className="text-xl font-semibold text-center">
+                {product.name}
+              </h1>
               <p className="text-sm">{product.ml}</p>
-              <p className="text-sm">{product.gender}</p>
+              <div className="flex justify-between items-center">
+                <p className="text-sm">{product.gender}</p>
+                <NavLink to={`/update-product/${product._id}`}>
+                  <button>Modifier</button>
+                </NavLink>
+              </div>
+
               <div className="flex justify-between items-center">
                 <p className="text-xl font-bold">{product.price}€</p>
                 <button onClick={() => showProductDetails(product)}>
                   Voir les détails
                 </button>
-
-                <button>
+                <button onClick={() => addToCart(product)}>
                   <CiShoppingCart className="hover:scale-110" size={"1.4rem"} />
                 </button>
               </div>

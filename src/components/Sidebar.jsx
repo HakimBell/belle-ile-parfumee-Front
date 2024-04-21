@@ -54,6 +54,7 @@ const Sidebar = () => {
             </button>
           </NavLink>
         </li>
+
         <li>
           <NavLink to="/create-product">
             <button>
@@ -61,6 +62,7 @@ const Sidebar = () => {
             </button>
           </NavLink>
         </li>
+
         <li>
           <button onClick={handleLogout}>
             <PiSignInLight size={"1.5rem"} />

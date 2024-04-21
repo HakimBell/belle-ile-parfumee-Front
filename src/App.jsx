@@ -16,6 +16,7 @@ import Favorites from "./Pages/Favorites";
 import Order from "./Pages/Order";
 import Sidebar from "./components/Sidebar";
 import CreateProduct from "./Pages/CreateProduct";
+import UpdateProduct from "./Pages/UpdateProduct";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/favs" element={<Favorites />} />
           <Route path="/orders" element={<Order />} />
           <Route path="/create-product" element={<CreateProduct />} />
+          <Route path="/update-product/:id" element={<UpdateProduct />} />
         </Route>
       </Routes>
     </Router>

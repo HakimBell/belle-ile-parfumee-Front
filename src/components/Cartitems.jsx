@@ -1,14 +1,17 @@
 import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { IoMdCheckmark } from "react-icons/io";
+import { useState } from "react";
 const CartItems = ({
   products,
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
 }) => {
+  const [orderedProducts, setOrderedProducts] = useState([]);
+  const navigate = useNavigate();
   const handleDelete = (productId) => {
     removeFromCart(productId);
   };
@@ -16,6 +19,14 @@ const CartItems = ({
     return products.reduce((total, product) => {
       return total + product.product.price * product.quantity;
     }, 0);
+  };
+
+  const handleOrderConfirmation = () => {
+    // Stocke les produits dans le localStorage
+    localStorage.setItem("orderedProducts", JSON.stringify(products));
+    setOrderedProducts([]);
+    // Redirige vers la page "/orders"
+    navigate("/orders");
   };
 
   return (
@@ -56,9 +67,9 @@ const CartItems = ({
                       </div>
                     </td>
                     <td>{product.product.price}€</td>
-                    <td>
-                      <td>{product.quantity}</td>
-                    </td>
+
+                    <td>{product.quantity}</td>
+
                     <td>
                       <button
                         onClick={() => decreaseQuantity(product.product._id)}
@@ -92,8 +103,15 @@ const CartItems = ({
               </NavLink>
               <div>
                 <p>Total: {calculateTotal()}€</p>
-                <NavLink to="/orders">
-                  <button className="flex items-center space-x-3 bg-green-200 font-semibold rounded p-2">
+                <NavLink
+                  to={{
+                    pathname: "/orders",
+                  }}
+                >
+                  <button
+                    onClick={handleOrderConfirmation}
+                    className="flex items-center space-x-3 bg-green-200 font-semibold rounded p-2"
+                  >
                     <span>Valider ma commande</span>
                     <IoMdCheckmark />
                   </button>
